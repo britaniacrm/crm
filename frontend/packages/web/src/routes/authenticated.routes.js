@@ -293,7 +293,13 @@ export const useRoutes = () => {
       Component: BuyerFormScreen,
       access: USER_ACCESSES.COMPRADORES
     },
-
+    removeBuyer: {
+      path: '/client/buyers/delete',
+      exact: true,
+      Component: BuyerFormScreen,
+      access: USER_ACCESSES.COMPRADORES,
+      action: USER_ACTIONS.EXCLUIR
+    },
     customers: {
       path: '/client/customers',
       exact: true,

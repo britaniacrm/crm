@@ -104,7 +104,8 @@ export const buyers = {
   getMatrix: '/services/buyers/matrix',
   post: '/services/buyers',
   haveBuyer: '/services/buyers/existence-buyer',
-  download: '/services/buyers/report'
+  download: '/services/buyers/report',
+  delete: '/services/buyers'
 }
 
 export const establishments = { getAll: '/services/establishments' }

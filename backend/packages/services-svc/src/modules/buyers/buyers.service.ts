@@ -80,7 +80,7 @@ export class BuyersService {
         })
         if (!hierarchy)
           throw new BadRequestException(
-            `A relação entre a linha ${ lineFamily.lineDescription } e a família ${ lineFamily.familyDescription } ` +
+            `A relação entre a linha ${lineFamily.lineDescription} e a família ${lineFamily.familyDescription} ` +
             'não foi encontrada na hierarquia do cliente selecionado'
           )
         return hierarchy
@@ -289,19 +289,19 @@ export class BuyersService {
       where: {
         ...(query.name && {
           name: {
-            $like: `%${ query.name }%`
+            $like: `%${query.name}%`
           }
         }),
         ...(query.q && {
           name: {
-            $like: `%${ query.q }%`
+            $like: `%${query.q}%`
           }
         }),
         ...(query.active && { active: query.active }),
         ...(query.clientTotvsCode
           ? {
             clientTotvsCode: {
-              $like: `%${ query.clientTotvsCode }%`
+              $like: `%${query.clientTotvsCode}%`
             }
           }
           : clientCodes.length && {
@@ -311,47 +311,47 @@ export class BuyersService {
           }),
         ...(query.birthday && {
           birthday: {
-            $like: `%${ query.birthday }%`
+            $like: `%${query.birthday}%`
           }
         }),
         ...(query.category && {
           category: {
-            $like: `%${ query.category }%`
+            $like: `%${query.category}%`
           }
         }),
         ...(query.cpf && {
           cpf: {
-            $like: `%${ query.cpf }%`
+            $like: `%${query.cpf}%`
           }
         }),
         ...(query.email && {
           email: {
-            $like: `%${ query.email }%`
+            $like: `%${query.email}%`
           }
         }),
         ...(query.imageId && {
           imageId: {
-            $like: `%${ query.imageId }%`
+            $like: `%${query.imageId}%`
           }
         }),
         ...(query.role && {
           role: {
-            $like: `%${ query.role }%`
+            $like: `%${query.role}%`
           }
         }),
         ...(query.telephone && {
           telephone: {
-            $like: `%${ query.telephone }%`
+            $like: `%${query.telephone}%`
           }
         }),
         ...(query.voltage && {
           voltage: {
-            $like: `%${ query.voltage }%`
+            $like: `%${query.voltage}%`
           }
         }),
         ...(query.id && {
           id: {
-            $like: `%${ query.id }%`
+            $like: `%${query.id}%`
           }
         })
       },
@@ -628,7 +628,7 @@ export class BuyersService {
     res: Response,
     transaction?: Transaction
   ): Promise<void> {
-    try{
+    try {
       const buyers = await this.db.query(
         'SELECT * FROM vw_buyers_report',
         { transaction, type: QueryTypes.SELECT }
@@ -673,5 +673,41 @@ export class BuyersService {
       )
     }
 
+  }
+
+  async deleteBuyer(buyerId: number): Promise<void> {
+    const transaction = await this.db.transaction()
+
+    try {
+      const buyer = await this.buyer.findByPk(buyerId);
+      if (!buyer) throw new BadRequestException('Comprador não encontrado')
+
+      await this.buyerAddress.destroy({
+        where: {
+          idBuyers: {
+            $eq: buyerId
+          }
+        },
+        transaction
+      })
+
+      await this.buyerLineFamily.destroy({
+        where: {
+          buyerId: {
+            $eq: buyerId
+          }
+        },
+        transaction
+      })
+
+      await buyer.destroy({ transaction });
+
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback()
+      if (error instanceof HttpException) throw error
+
+      throw new InternalServerErrorException('Erro ao deletar o comprador')
+    }
   }
 }

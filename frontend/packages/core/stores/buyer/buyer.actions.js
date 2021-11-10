@@ -5,7 +5,8 @@ import { createActions } from 'reduxsauce'
  */
 export const { Types, Creators } = createActions({
   saveBuyer: ['params', 'onSuccess', 'onError'],
-  editBuyer: ['id', 'params', 'onSuccess', 'onError']
+  editBuyer: ['id', 'params', 'onSuccess', 'onError'],
+  removeBuyer: ['id'],
 })
 
 export {

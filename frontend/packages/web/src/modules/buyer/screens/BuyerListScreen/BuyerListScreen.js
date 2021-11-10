@@ -19,6 +19,7 @@ import ConfirmModal from '@britania-crm/web-components/Modal/ConfirmModal'
 
 import BuyerFormFilter from '../../components/BuyerFormFilter'
 import { Container } from './styles'
+import { BuyerActions } from '@britania-crm/stores/buyer'
 
 const BuyerListScreen = () => {
   const t = useT()
@@ -184,7 +185,12 @@ const BuyerListScreen = () => {
       Component: ConfirmModal,
       props: {
         onConfirm () {
-          dispatch()
+          dispatch(
+            BuyerActions.removeBuyer(
+              row.id,
+              () => (console.log('teste')),
+            )
+          )
         }
       }
     }),

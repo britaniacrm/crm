@@ -9,7 +9,8 @@ import {
   Put,
   Res,
   Header,
-  Response
+  Response,
+  Delete
 } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
 
@@ -29,7 +30,7 @@ import { Buyer } from './entities/buyer.entity'
 @ApiBearerAuth()
 @Controller('buyers')
 export class BuyersController {
-  constructor(private readonly buyersService: BuyersService) {}
+  constructor(private readonly buyersService: BuyersService) { }
 
   /**
    * Irá cadastrar o comprador
@@ -139,12 +140,25 @@ export class BuyersController {
    * @param userId userId
    * @param buyerId number
    */
-   @Get(':buyerId')
-   findOneBuyer(
+  @Get(':buyerId')
+  findOneBuyer(
+    @Param('buyerId') buyerId: number,
+    @BritaniaAuth(['userId']) userId: number
+  ): Promise<Buyer> {
+    return this.buyersService.getBuyer(userId, buyerId)
+  }
+
+  /**
+   * Irá deletar o comprador
+   * @param userId userId
+   * @param buyerId number
+   */
+   @Delete(':buyerId')
+   deleteBuyer(
      @Param('buyerId') buyerId: number,
      @BritaniaAuth(['userId']) userId: number
-   ): Promise<Buyer> {
-     return this.buyersService.getBuyer(userId, buyerId)
+   ): Promise<void> {
+     return this.buyersService.deleteBuyer(buyerId);
    }
 
 }
