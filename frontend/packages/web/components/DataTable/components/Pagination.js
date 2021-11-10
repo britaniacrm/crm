@@ -9,8 +9,8 @@ const useStyles = makeStyles({
   root: {
     width: '100%',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'left',
+    justifyContent: 'left',
     border: 0
   }
 })

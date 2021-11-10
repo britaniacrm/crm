@@ -195,12 +195,11 @@ const BuyerListScreen = () => {
           filters={filters}
           columns={columns}
           loading={downloadLoading}
-          title={t('buyer', { howMany: 2 })}
           addTitle={t('new {this}', {
             gender: 'male',
             this: t('buyer', { howMany: 1 })
           })}
-          searchPlaceholder={t('search by buyer and matrix')}
+          searchPlaceholder={'Buscar por nome'}
           hasFilter
           filterForm={BuyerFormFilter}
           handleFilter={handleFilter}

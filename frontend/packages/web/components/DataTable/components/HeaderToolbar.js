@@ -145,7 +145,7 @@ export class MTableToolbar extends React.Component {
           autoFocus={this.props.searchAutoFocus}
           className={
             this.props.searchFieldAlignment === 'left' &&
-            this.props.showTitle === false
+              this.props.showTitle === false
               ? null
               : this.props.classes.searchField
           }
@@ -155,8 +155,8 @@ export class MTableToolbar extends React.Component {
             this.props.searchPlaceholder || localization.searchPlaceholder
           }
           style={{
-            maxWidth: 425,
-            minWidth: 100
+            maxWidth: '372px',
+            minWidth: '50px'
           }}
         />
       )
@@ -344,17 +344,17 @@ export class MTableToolbar extends React.Component {
     }
     const title =
       this.props.showTextRowsSelected &&
-      this.props.selectedRows &&
-      this.props.selectedRows.length > 0
+        this.props.selectedRows &&
+        this.props.selectedRows.length > 0
         ? typeof localization.nRowsSelected === 'function'
           ? localization.nRowsSelected(this.props.selectedRows.length)
           : localization.nRowsSelected.replace(
-              '{0}',
-              this.props.selectedRows.length
-            )
+            '{0}',
+            this.props.selectedRows.length
+          )
         : this.props.showTitle
-        ? this.props.title
-        : null
+          ? this.props.title
+          : null
 
     return (
       <Toolbar
@@ -379,21 +379,23 @@ export class MTableToolbar extends React.Component {
               marginBottom: 10
             }}
           >
+            {this.props.searchFieldAlignment === 'left' && this.renderSearch()}
+            {this.props.searchFieldAlignment === 'right' && this.renderSearch()}
+            <Grid item style={{ marginLeft: '10px', marginRight: '10px', width: 186 }}>
+              {this.props.hasFilter ? (
+                <PageFilter
+                  handleFilter={this.props.handleFilter}
+                  Form={this.props.filterForm}
+                  clearSearch={() => this.onSearchChange('')}
+                />
+              ) : null}
+            </Grid>
             {this.props.onGoBack && this.renderGoBack()}
             {title && this.renderToolbarTitle(title)}
             {this.renderActions()}
           </Grid>
-          {this.props.searchFieldAlignment === 'left' && this.renderSearch()}
-          {this.props.searchFieldAlignment === 'right' && this.renderSearch()}
-          <Grid item sm={4} style={{ marginLeft: 20 }}>
-            {this.props.hasFilter ? (
-              <PageFilter
-                handleFilter={this.props.handleFilter}
-                Form={this.props.filterForm}
-                clearSearch={() => this.onSearchChange('')}
-              />
-            ) : null}
-          </Grid>
+
+
         </Grid>
       </Toolbar>
     )
@@ -483,13 +485,13 @@ export const styles = (theme) => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark
+      },
   spacer: { flex: '1 1 10%' },
   actions: { color: theme.palette.text.primary },
   title: {
