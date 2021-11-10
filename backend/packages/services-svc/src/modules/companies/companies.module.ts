@@ -7,18 +7,21 @@ import { LoggerModule } from 'nestjs-pino'
 import { DatabaseProvider } from '../../database/database.provider'
 import { CompaniesController } from './companies.controller'
 import { CompaniesService } from './companies.service'
+import { LogsService } from '../logs/logs.service'
 import { CompaniesBankAccount } from './entities/companiesBankAccount.entity'
 import { Company } from './entities/company.entity'
 import { Bank } from '../banks/entities/bank.entity'
+import { Log } from '../logs/entities/log.entity'
+import { User } from '../users/entities/user.entity'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     LoggerModule.forRoot(),
-    SequelizeModule.forFeature([Company, CompaniesBankAccount, Bank])
+    SequelizeModule.forFeature([Company, CompaniesBankAccount, Bank, Log, User])
   ],
   controllers: [CompaniesController],
-  providers: [DatabaseProvider, CompaniesService,
+  providers: [DatabaseProvider, LogsService, CompaniesService,
     {
       provide: 'LOGS_SERVICE',
       inject: [ConfigService],

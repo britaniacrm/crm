@@ -8,7 +8,10 @@ import {
   Put,
   Param,
   Query,
-  Delete
+  Delete,
+  Header,
+  Res,
+  Response
 } from '@nestjs/common'
 import {
   ApiTags,
@@ -30,6 +33,7 @@ import { PermissionsEnum } from '../../utils/enums/permissions.enum'
 import { PagedApiResponse } from '../../utils/pagination/pagedApiResponse.dto'
 import { PagedResult } from '../../utils/pagination/pagedResult.dto'
 import { CompaniesService } from './companies.service'
+import { LogsService } from '../logs/logs.service'
 import { CompaniesBankAccountDto } from './dtos/companiesBankAccount.dto'
 import { CompaniesBankAccountQueryDto } from './dtos/companiesBankAccountQuery.dto'
 import { CompanyDto } from './dtos/company.dto'
@@ -45,8 +49,8 @@ import { Company } from './entities/company.entity'
 @ApiExtraModels(PagedResult, CompanyDto, CompaniesBankAccountDto)
 export class CompaniesController {
   constructor(
-    @Inject('CompaniesService')
-    private readonly companiesService: CompaniesService
+    @Inject('CompaniesService') private readonly companiesService: CompaniesService,
+    @Inject('LogsService') private readonly logsService: LogsService
   ) {}
 
   @PagedApiResponse(Company, 'List of companies')
@@ -59,6 +63,25 @@ export class CompaniesController {
   @Get('/company-bank-account')
   findCompaniesBankAccount(@Query() query: CompaniesBankAccountQueryDto): Promise<PagedResult<CompaniesBankAccountDto>> {
     return this.companiesService.findCompaniesBankAccount(query)
+  }
+
+  @Get('report')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  )
+  @Header(
+    'Content-disposition',
+    'attachment filename=Relatorio_Relacao_Clientes.xls'
+  )
+  report(
+    @Res() res: Response,
+  ) {
+    const table = 'companies_bank_account'
+    const columns = ['Ação', 'Razão Social', 'CNPJ', 'Banco', 'Agencia', 'Conta', 'Observação', 'Cadastro por', 'Alterado por', 'Cadastro em	Alterado em']
+    const jsonColumns = ['companyId', 'companyId', 'bankCode', 'agency', 'account', 'note', 'createdBy', 'updatedBy', 'created_at', 'updated_at']
+
+    this.logsService.generateReport(res, table, columns, jsonColumns)
   }
 
   @ApiOkResponse({

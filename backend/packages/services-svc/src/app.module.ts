@@ -26,6 +26,7 @@ import { MessageBoardsModule } from './modules/messageBoards/messageBoards.modul
 import { PermissionsModule } from './modules/permissions/permissions.module'
 import { ProductModule } from './modules/products/product.module'
 import { ProfilesModule } from './modules/profiles/profiles.module'
+import { LogsModule } from './modules/logs/logs.module'
 import { ReportsModule } from './modules/reports/reports.module'
 import { RepresentativesModule } from './modules/representatives/representatives.module'
 import { SettingsModule } from './modules/settings/settings.module'
@@ -76,6 +77,7 @@ import { WorkflowPerformedTypesModule } from './modules/workflowsPerformedTypes/
     NotificationsUtilsModule,
     FanModule,
     HierarchyModule,
+    LogsModule,
     ReportsModule,
     ProductModule,
     CronsModule,

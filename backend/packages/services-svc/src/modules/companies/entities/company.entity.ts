@@ -1,5 +1,4 @@
 import { Column, Model, Table, DataType, HasOne } from 'sequelize-typescript'
-import { Bank } from '../../banks/entities/bank.entity';
 
 import { User } from '../../users/entities/user.entity'
 
