@@ -14,6 +14,8 @@ import { FileActions } from '@britania-crm/stores/file'
 import DataTable from '@britania-crm/web-components/DataTable'
 import Tooltip from '@britania-crm/web-components/Tooltip'
 import { useRoutes } from '@britania-crm/web-src/routes/authenticated.routes'
+import { useDialog } from '@britania-crm/dialog'
+import ConfirmModal from '@britania-crm/web-components/Modal/ConfirmModal'
 
 import BuyerFormFilter from '../../components/BuyerFormFilter'
 import { Container } from './styles'
@@ -23,6 +25,7 @@ const BuyerListScreen = () => {
   const { routes, currentRoutePermissions } = useRoutes()
   const history = useHistory()
   const dispatch = useCallback(useDispatch(), [])
+  const { createDialog } = useDialog()
 
   const [filters, setFilters] = useState({})
 
@@ -147,18 +150,6 @@ const BuyerListScreen = () => {
     [history, routes.editBuyer.path]
   )
 
-  const onRowClick = useCallback(
-    (event, row) => {
-      history.push(routes.viewBuyer.path, {
-        params: {
-          mode: 'view',
-          id: row.id
-        }
-      })
-    },
-    [history, routes.viewBuyer.path]
-  )
-
   const handleFilter = useCallback((values) => {
     setFilters(
       omitBy(
@@ -187,6 +178,19 @@ const BuyerListScreen = () => {
     history.push(routes.newBuyer.path, { params: { mode: 'create' } })
   }, [history, routes.newBuyer.path])
 
+  const onDeleteClick = useCallback(
+    (event, row) => createDialog({
+      id: 'delete-buyer-modal',
+      Component: ConfirmModal,
+      props: {
+        onConfirm () {
+          dispatch()
+        }
+      }
+    }),
+    [createDialog, dispatch]
+  )
+
   return (
     <>
       <Container>
@@ -205,7 +209,7 @@ const BuyerListScreen = () => {
           handleFilter={handleFilter}
           onAddClick={currentRoutePermissions.INCLUIR && onCreateClick}
           onEditClick={currentRoutePermissions.EDITAR && onEditClick}
-          onRowClick={onRowClick}
+          onDeleteClick={onDeleteClick}
           addFilterTitle={t('filter data')}
           onExportClick={handleDownload}
           emptyMessage={t('{this} datagrid body empty data source message', {
