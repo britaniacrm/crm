@@ -93,7 +93,7 @@ export class BuyersController {
   findAllBuyers(
     @Query() query: FindAllBuyersQueryDto,
     @BritaniaAuth(['userId']) userId: number
-  ): Promise<Buyer[]> {
+  ): Promise<any> {
     return this.buyersService.getAllBuyers(query, userId)
   }
 
@@ -155,10 +155,9 @@ export class BuyersController {
    */
    @Delete(':buyerId')
    deleteBuyer(
-     @Param('buyerId') buyerId: number,
-     @BritaniaAuth(['userId']) userId: number
+     @Param('buyerId') buyerId: number
    ): Promise<void> {
-     return this.buyersService.deleteBuyer(buyerId);
+     return this.buyersService.deleteBuyer(buyerId)
    }
 
 }

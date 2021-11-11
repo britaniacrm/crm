@@ -546,10 +546,12 @@ const DataTable = forwardRef((props, ref) => {
           }
         })
 
+        console.log('result >>>>>>>>', result)
+
         return {
-          data: result.data,
+          data: result.data.data,
           page,
-          totalCount: result.data.length || 0
+          totalCount: result.data.totalRegisters || 0
         }
       } catch (e) {
         // eslint-disable-next-line no-console
