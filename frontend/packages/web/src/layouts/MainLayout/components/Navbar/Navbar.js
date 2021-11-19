@@ -137,7 +137,7 @@ const MenuNavbar = ({
             popoverId="user-menu"
             Component={ (p) => (
               <Profile { ...p }>
-                <span>Olá, <strong>{username}</strong></span>
+                <span><strong>## 1.0.0.3 AMBIENTE DE HOMOLOGAÇÃO ##</strong> - Olá, <strong>{username}</strong></span>
                 <ExpandMoreIcon />
                 <Avatar
                   src={ formatPathToCloudStorageUrl(file?.path) }
